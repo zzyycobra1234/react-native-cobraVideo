@@ -1,5 +1,3 @@
-
-
 import React, {Component} from 'react';
 import {Text, StyleSheet, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -29,15 +27,15 @@ export default class TabBar extends Component {
             <TabNavigator
                 hidesTabTouch={true}
                 tabBarStyle={styles.tabbar}
-                sceneStyle={{ paddingBottom: styles.tabbar.height }}>
+                sceneStyle={{paddingBottom: styles.tabbar.height}}>
                 <TabNavigator.Item
                     tabStyle={styles.tabStyle}
                     title={tabName[0]}
                     selected={this.state.selectedTab === 'home'}
                     selectedTitleStyle={{color: selectedColor}}
-                    renderIcon={() => <Image style={styles.tab} source={this.state.homeNormal} />}
-                    renderSelectedIcon={() => <Image style={styles.tab} source={this.state.homeSelected} />}
-                    onPress={() => this.setState({ selectedTab: 'home' })}>
+                    renderIcon={() => <Image style={styles.tab} source={this.state.homeNormal}/>}
+                    renderSelectedIcon={() => <Image style={styles.tab} source={this.state.homeSelected}/>}
+                    onPress={() => this.setState({selectedTab: 'home'})}>
                     {<SettingPage navigator={this.props.navigator}/>}
                 </TabNavigator.Item>
                 <TabNavigator.Item
@@ -45,9 +43,9 @@ export default class TabBar extends Component {
                     title={tabName[1]}
                     selected={this.state.selectedTab === 'compass'}
                     selectedTitleStyle={{color: selectedColor}}
-                    renderIcon={() => <Image style={styles.tab} source={this.state.compassNormal} />}
-                    renderSelectedIcon={() => <Image style={styles.tab} source={this.state.compassSelected} />}
-                    onPress={() => this.setState({ selectedTab: 'compass' })}>
+                    renderIcon={() => <Image style={styles.tab} source={this.state.compassNormal}/>}
+                    renderSelectedIcon={() => <Image style={styles.tab} source={this.state.compassSelected}/>}
+                    onPress={() => this.setState({selectedTab: 'compass'})}>
                     {/*{<CompassFragment />}*/}
                     {<SettingPage navigator={this.props.navigator}/>}
                 </TabNavigator.Item>
@@ -56,9 +54,9 @@ export default class TabBar extends Component {
                     title={tabName[2]}
                     selected={this.state.selectedTab === 'notification'}
                     selectedTitleStyle={{color: selectedColor}}
-                    renderIcon={() => <Image style={styles.tab} source={this.state.notificationNormal} />}
-                    renderSelectedIcon={() => <Image style={styles.tab} source={this.state.notificationSelected} />}
-                    onPress={() => this.setState({ selectedTab: 'notification' })}>
+                    renderIcon={() => <Image style={styles.tab} source={this.state.notificationNormal}/>}
+                    renderSelectedIcon={() => <Image style={styles.tab} source={this.state.notificationSelected}/>}
+                    onPress={() => this.setState({selectedTab: 'notification'})}>
                     {/*{<NotifyFragment navigator={this.props.navigator}/>}*/}
                     {<SettingPage navigator={this.props.navigator}/>}
                 </TabNavigator.Item>
@@ -67,9 +65,9 @@ export default class TabBar extends Component {
                     title={tabName[3]}
                     selected={this.state.selectedTab === 'me'}
                     selectedTitleStyle={{color: selectedColor}}
-                    renderIcon={() => <Image style={styles.tab} source={this.state.meNormal} />}
-                    renderSelectedIcon={() => <Image style={styles.tab} source={this.state.meSelected} />}
-                    onPress={() => this.setState({ selectedTab: 'me' })}>
+                    renderIcon={() => <Image style={styles.tab} source={this.state.meNormal}/>}
+                    renderSelectedIcon={() => <Image style={styles.tab} source={this.state.meSelected}/>}
+                    onPress={() => this.setState({selectedTab: 'me'})}>
                     {/*{<MeFragment navigator={this.props.navigator}/>}*/}
                     {<SettingPage navigator={this.props.navigator}/>}
                 </TabNavigator.Item>
@@ -79,14 +77,14 @@ export default class TabBar extends Component {
 
     componentWillMount() {
         const {selectedColor, normalColor} = this.props;
-        // Icon.getImageSource('md-notifications', 50, normalColor).then((source) => this.setState({notificationNormal: source}));
-        // Icon.getImageSource('md-notifications', 50, selectedColor).then((source) => this.setState({notificationSelected: source}));
-        // Icon.getImageSource('md-home', 50, normalColor).then((source) => this.setState({homeNormal: source}));
-        // Icon.getImageSource('md-home', 50, selectedColor).then((source) => this.setState({homeSelected: source}));
-        // Icon.getImageSource('md-person', 50, normalColor).then((source) => this.setState({meNormal: source}));
-        // Icon.getImageSource('md-person', 50, selectedColor).then((source) => this.setState({meSelected: source}));
-        // Icon.getImageSource('md-compass', 50, normalColor).then((source) => this.setState({compassNormal: source}));
-        // Icon.getImageSource('md-compass', 50, selectedColor).then((source) => this.setState({compassSelected: source}));
+        Icon.getImageSource('md-notifications', 50, normalColor).then((source) => this.setState({notificationNormal: source}));
+        Icon.getImageSource('md-notifications', 50, selectedColor).then((source) => this.setState({notificationSelected: source}));
+        Icon.getImageSource('md-home', 50, normalColor).then((source) => this.setState({homeNormal: source}));
+        Icon.getImageSource('md-home', 50, selectedColor).then((source) => this.setState({homeSelected: source}));
+        Icon.getImageSource('md-person', 50, normalColor).then((source) => this.setState({meNormal: source}));
+        Icon.getImageSource('md-person', 50, selectedColor).then((source) => this.setState({meSelected: source}));
+        Icon.getImageSource('md-compass', 50, normalColor).then((source) => this.setState({compassNormal: source}));
+        Icon.getImageSource('md-compass', 50, selectedColor).then((source) => this.setState({compassSelected: source}));
     }
 }
 
