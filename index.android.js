@@ -12,16 +12,18 @@ import {
 } from 'react-native';
 
 
-import Navigation from './js/config/Navigation';
+import Entry from './js/config/Entry';
 
 export default class RnCobraVideo extends Component {
 
     render() {
         return (
-            <Navigation/>
+            <Entry/>
         );
     }
 }
+
+AppRegistry.registerComponent('RnCobraVideo', () => RnCobraVideo);
 
 //   render() {
 //     return (
@@ -60,4 +62,3 @@ export default class RnCobraVideo extends Component {
 //   },
 // });
 
-AppRegistry.registerComponent('RnCobraVideo', () => RnCobraVideo);
