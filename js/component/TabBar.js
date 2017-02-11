@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Text, StyleSheet, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+
 import TabNavigator from 'react-native-tab-navigator';
 import px2dp from '../util/px2dp';
 import ChannelFragment from '../page/ChannelPage';
@@ -44,23 +46,21 @@ export default class TabBar extends Component {
                 <TabNavigator.Item
                     tabStyle={styles.tabStyle}
                     title={tabName[1]}
-                    selected={this.state.selectedTab === 'compass'}
+                    selected={this.state.selectedTab === 'channel'}
                     selectedTitleStyle={{color: selectedColor}}
                     renderIcon={() => <Image style={styles.tab} source={this.state.compassNormal}/>}
                     renderSelectedIcon={() => <Image style={styles.tab} source={this.state.compassSelected}/>}
-                    onPress={() => this.setState({selectedTab: 'compass'})}>
-                    {/*{<CompassFragment />}*/}
+                    onPress={() => this.setState({selectedTab: 'channel'})}>
                     {<ChannelFragment navigator={this.props.navigator}/>}
                 </TabNavigator.Item>
                 <TabNavigator.Item
                     tabStyle={styles.tabStyle}
                     title={tabName[2]}
-                    selected={this.state.selectedTab === 'notification'}
+                    selected={this.state.selectedTab === 'rankList'}
                     selectedTitleStyle={{color: selectedColor}}
                     renderIcon={() => <Image style={styles.tab} source={this.state.notificationNormal}/>}
                     renderSelectedIcon={() => <Image style={styles.tab} source={this.state.notificationSelected}/>}
-                    onPress={() => this.setState({selectedTab: 'notification'})}>
-                    {/*{<NotifyFragment navigator={this.props.navigator}/>}*/}
+                    onPress={() => this.setState({selectedTab: 'rankList'})}>
                     {<RankListFragment navigator={this.props.navigator}/>}
                 </TabNavigator.Item>
                 <TabNavigator.Item
@@ -71,7 +71,6 @@ export default class TabBar extends Component {
                     renderIcon={() => <Image style={styles.tab} source={this.state.meNormal}/>}
                     renderSelectedIcon={() => <Image style={styles.tab} source={this.state.meSelected}/>}
                     onPress={() => this.setState({selectedTab: 'me'})}>
-                    {/*{<MeFragment navigator={this.props.navigator}/>}*/}
                     {<MeFragment navigator={this.props.navigator}/>}
                 </TabNavigator.Item>
             </TabNavigator>
@@ -93,16 +92,17 @@ export default class TabBar extends Component {
 
 const styles = StyleSheet.create({
     tabbar: {
-        height: px2dp(49),
+        height: px2dp(50),
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#fff'
     },
     tabStyle: {
-        padding: px2dp(8)
+        // padding: px2dp(5)
+        paddingTop: px2dp(8)
     },
     tab: {
-        width: px2dp(22),
-        height: px2dp(22)
+        width: px2dp(20),
+        height: px2dp(20)
     }
 });

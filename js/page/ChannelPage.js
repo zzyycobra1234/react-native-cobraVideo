@@ -2,6 +2,8 @@ import {Alert, StyleSheet, View, Text, ScrollView, Switch, TouchableNativeFeedba
 import React, {Component, PropTypes} from 'react';
 
 // second
+// http://api.fffml.com/channel
+
 export  default  class ChannelFragment extends Component {
 
 
