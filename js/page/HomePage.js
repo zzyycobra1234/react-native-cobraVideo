@@ -3,18 +3,27 @@ import {
     View, Text, ScrollView,
     Switch, TouchableNativeFeedback,
     TouchableOpacity, Platform,
-    PixelRatio, BackAndroid,
-    Dimensions
+    PixelRatio,
+    Dimensions, Image,
 } from 'react-native';
 import React, {Component, PropTypes} from 'react';
 import ImageButton from '../component/ImageButtonWithText';
 import px2dp from '../util/px2dp';
+import Swiper from 'react-native-swiper';
 import theme from '../config/theme';
 
 // http://api.fffml.com/sites
 // First
 export  default  class HomeFragment extends Component {
-
+    constructor(props) {
+        super(props);
+        this.state = {
+            refreshing: true,
+            loadedData: false,
+            dataBlob: [],
+            btnName: ['电影', '电视剧', '动漫', '综艺']
+        }
+    }
 
     render() {
         return (
@@ -30,33 +39,7 @@ export  default  class HomeFragment extends Component {
                             titleColor={theme.themeColor}
                         />
                     }>
-                    <Swiper
-                        height={px2dp(130)}
-                        autoplay={true}
-                        bounces={true}>
-                        <View style={styles.slide}>
-                            <Image style={styles.image} source={bannerImages[0]} resizeMode="stretch"/>
-                        </View>
-                        <View style={styles.slide}>
-                            <Image style={styles.image} source={bannerImages[1]} resizeMode="stretch"/>
-                        </View>
-                    </Swiper>
-                    <View style={styles.imageBtnLine}>
-                        {this.state.btnName.map((item, index) => {
-                            return (
-                                <ImageButton
-                                    key={index}
-                                    image={imgBtnImages[index]}
-                                    imgSize={px2dp(35)}
-                                    text={item}
-                                    color="#000"
-                                    btnStyle={styles.imgBtn}
-                                    onPress={this._imageButtonCallback.bind(this, index)}/>
-                            )
-                        })
-                        }
-                    </View>
-                    {/*{ this._renderListView() }*/}
+
                 </ScrollView>
             </View>
         );
@@ -64,6 +47,33 @@ export  default  class HomeFragment extends Component {
 
     _imageButtonCallback(position) {
         this._alert();
+    }
+
+    _onRefresh() {
+        this.setState({refreshing: true});
+        this._fetchData();
+    }
+
+
+    _fetchData() {
+        fetch("http://api.fffml.com/sites")
+            .then((response) => response.json())
+            .then((responseData) => {
+                let data = responseData.data;
+                let entry = data.slide_list;
+
+                console.log(data)
+                console.log(entry)
+
+                for(let i in entry){
+                    console.log(entry[i])
+                }
+
+            })
+    }
+
+    componentDidMount() {
+        this._fetchData();
     }
 
 }
