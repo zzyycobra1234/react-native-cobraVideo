@@ -1,3 +1,4 @@
+'use strict';
 import React, {Component} from 'react';
 import {Navigator} from 'react-native';
 import SplashScreen from '../native_modules/SplashScreen';

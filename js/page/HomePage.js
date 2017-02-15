@@ -1,10 +1,12 @@
+'use strict';
 import {
     RefreshControl, StyleSheet,
     View, Text, ScrollView,
     Switch, TouchableNativeFeedback,
     TouchableOpacity, Platform,
     PixelRatio,
-    Dimensions, Image,
+    Dimensions, Image
+    , Alert, AlertIOS
 } from 'react-native';
 import React, {Component, PropTypes} from 'react';
 import ImageButton from '../component/ImageButtonWithText';
@@ -14,6 +16,20 @@ import theme from '../config/theme';
 
 // http://api.fffml.com/sites
 // First
+
+//
+var slideItemsData = [];
+const deviceWidthDp = Dimensions.get('window').width;
+const swiperHeight  = 150;
+const imgBtnImages = [
+    require('../res/image/home_type_dy.png'),
+    require('../res/image/home_type_dsj.png'),
+    require('../res/image/home_type_dm.png'),
+    require('../res/image/home_type_zy.png'),
+
+];
+
+
 export  default  class HomeFragment extends Component {
     constructor(props) {
         super(props);
@@ -40,10 +56,81 @@ export  default  class HomeFragment extends Component {
                         />
                     }>
 
+                    <Swiper
+                        height={px2dp(swiperHeight)}
+                        onMomentumScrollEnd={(e, state, context) => console.log('index:', state.index)}
+                        autoplay={true}
+                        bounces={true}
+                        dot={<View
+                            style={{backgroundColor: 'rgba(0,0,0,.2)', width: 5, height: 5, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3}}/>}
+                        activeDot={<View
+                            style={{backgroundColor: '#000', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3}}/>}
+                        loop={true}
+                        paginationStyle={{
+                            bottom: 0, left: null, right: 10
+                        }}
+                    >
+                        {this.renderSwiperView()}
+
+                    </Swiper>
+
+
+                    <View style={styles.imageBtnLine}>
+                        {this.state.btnName.map((item, index) => {
+                            return (
+                                <ImageButton
+                                    key={index}
+                                    image={imgBtnImages[index]}
+                                    imgSize={px2dp(35)}
+                                    text={item}
+                                    color="#000"
+                                    btnStyle={styles.imgBtn}
+                                    onPress={this._imageButtonCallback.bind(this, index)}/>
+                            )
+                        })
+                        }
+                    </View>
+
+
                 </ScrollView>
             </View>
         );
     }
+
+    // 返回所有的轮播图
+    renderSwiperView() {
+        let swiperViews = [];
+        for (let i in slideItemsData) {
+            let data = slideItemsData[i];
+            // console.log(data.slidePicUrl);
+
+            swiperViews.push(
+                <View
+                    key={i}
+                    style={styles.slideItemStyle}
+                >
+                    <Text
+                        numberOfLines={1}
+                        style={{
+                            backgroundColor: '#808080aa',
+                            position: 'absolute',
+                            bottom: 0,
+                            width: deviceWidthDp,
+                            zIndex: 1,
+                            paddingLeft: 5,
+                            color: 'white'
+                        }}
+                    >{data.slideName}</Text>
+                    <Image
+                        style={styles.image}
+                        source={{uri: data.slidePicUrl}}
+                        resizeMode="stretch"/>
+                </View>
+            );
+        }
+        return swiperViews;
+    };
+
 
     _imageButtonCallback(position) {
         this._alert();
@@ -52,6 +139,7 @@ export  default  class HomeFragment extends Component {
     _onRefresh() {
         this.setState({refreshing: true});
         this._fetchData();
+
     }
 
 
@@ -61,20 +149,52 @@ export  default  class HomeFragment extends Component {
             .then((responseData) => {
                 let data = responseData.data;
                 let entry = data.slide_list;
-
-                console.log(data)
-                console.log(entry)
-
-                for(let i in entry){
-                    console.log(entry[i])
+                for (let i in entry) {
+                    let slideList = {
+                        slidePicUrl: entry[i].pic,
+                        slideId: entry[i].vod_id,
+                        slideName: entry[i].name,
+                    }
+                    slideItemsData.push(slideList);
                 }
 
+
+                this.setState({
+                    loadedData: true,
+                    refreshing: false
+                });
             })
+
+
     }
 
     componentDidMount() {
         this._fetchData();
     }
+
+
+    _alert() {
+        if (Platform.OS === 'android') {
+            Alert.alert(
+                'Message',
+                "This function currently isn't available",
+                [{
+                    text: 'OK', onPress: () => {
+                    }
+                }]
+            );
+        } else if (Platform.OS === 'ios') {
+            AlertIOS.alert(
+                'Message',
+                "This function currently isn't available",
+                [{
+                    text: 'OK', onPress: () => {
+                    }
+                }]
+            );
+        }
+    }
+
 
 }
 
@@ -83,9 +203,13 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: theme.pageBackgroundColor
     },
-    slide: {},
+    slideItemStyle: {
+        flex: 1,
+        backgroundColor: '#808080aa',
+
+    },
     image: {
-        height: px2dp(130),
+        height: px2dp(swiperHeight),
         width: Dimensions.get('window').width
     },
     imageBtnLine: {
@@ -97,6 +221,6 @@ const styles = StyleSheet.create({
     },
     imgBtn: {
         height: px2dp(80),
-        width: Dimensions.get('window').width / 3,
+        width: Dimensions.get('window').width / imgBtnImages.length,
     }
 });
