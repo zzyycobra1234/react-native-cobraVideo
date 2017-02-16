@@ -19,8 +19,15 @@ import theme from '../config/theme';
 
 //
 var slideItemsData = [];
+var moveData = [];
+var tvData = [];
+var comicData = [];
+var artsData = [];
+
+
+
 const deviceWidthDp = Dimensions.get('window').width;
-const swiperHeight  = 150;
+const swiperHeight = 150;
 const imgBtnImages = [
     require('../res/image/home_type_dy.png'),
     require('../res/image/home_type_dsj.png'),
@@ -31,6 +38,7 @@ const imgBtnImages = [
 
 
 export  default  class HomeFragment extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -90,7 +98,7 @@ export  default  class HomeFragment extends Component {
                         })
                         }
                     </View>
-
+                    {this.renderMoveSortBoxView()}
 
                 </ScrollView>
             </View>
@@ -102,7 +110,7 @@ export  default  class HomeFragment extends Component {
         let swiperViews = [];
         for (let i in slideItemsData) {
             let data = slideItemsData[i];
-            // console.log(data.slidePicUrl);
+            // console.log(data.pic);
 
             swiperViews.push(
                 <View
@@ -120,10 +128,10 @@ export  default  class HomeFragment extends Component {
                             paddingLeft: 5,
                             color: 'white'
                         }}
-                    >{data.slideName}</Text>
+                    >{data.name}</Text>
                     <Image
                         style={styles.image}
-                        source={{uri: data.slidePicUrl}}
+                        source={{uri: data.pic}}
                         resizeMode="stretch"/>
                 </View>
             );
@@ -131,6 +139,66 @@ export  default  class HomeFragment extends Component {
         return swiperViews;
     };
 
+
+    // 电影外框图
+    renderMoveSortBoxView() {
+        let view = (
+            <View style={{
+                marginTop: 10,
+                flexDirection: 'row',
+                backgroundColor: 'white'
+            }}>
+
+                <Text
+                    style={{
+                        flex: 1,
+                        fontSize: 15,
+                        marginLeft: 10,
+                        color: 'black',
+                    }}
+                >{'热播电影'}</Text>
+                <Text
+                    style={{
+                        fontSize: 10,
+                        color: 'black',
+                        alignItems: 'center',
+                        paddingRight: 10,
+                    }}
+                >{'more'}</Text>
+            </View>
+        );
+
+        return view;
+    }
+
+
+// 电影itemView
+    renderMoveItemView() {
+        return (
+            <View >
+                <Text
+                    style={{
+                        flex: 1,
+                        fontSize: 15,
+                        marginLeft: 10,
+                        color: 'black',
+                    }}
+                >{'热播电影'}</Text>
+                <Text
+                    style={{
+                        flex: 1,
+                        fontSize: 15,
+                        marginLeft: 10,
+                        color: 'black',
+                    }}
+                >{'热播电影'}</Text>
+                <Image
+                    style={styles.image}
+                    source={{uri: data.pic}}
+                    resizeMode="stretch"/>
+            </View>
+        );
+    }
 
     _imageButtonCallback(position) {
         this._alert();
@@ -148,15 +216,11 @@ export  default  class HomeFragment extends Component {
             .then((response) => response.json())
             .then((responseData) => {
                 let data = responseData.data;
-                let entry = data.slide_list;
-                for (let i in entry) {
-                    let slideList = {
-                        slidePicUrl: entry[i].pic,
-                        slideId: entry[i].vod_id,
-                        slideName: entry[i].name,
-                    }
-                    slideItemsData.push(slideList);
-                }
+                this.analysisSlideListData(data.slide_list);
+                this.analysisMoveListData(data.move_list, moveData);
+                this.analysisMoveListData(data.tv_list, tvData);
+                this.analysisMoveListData(data.comic_list, comicData);
+                this.analysisMoveListData(data.arts_list, artsData);
 
 
                 this.setState({
@@ -167,6 +231,36 @@ export  default  class HomeFragment extends Component {
 
 
     }
+
+    analysisSlideListData(swiperList) {
+        for (let i in swiperList) {
+            let slideList = {
+                pic: swiperList[i].pic,
+                id: swiperList[i].vod_id,
+                name: swiperList[i].name,
+            }
+            slideItemsData.push(slideList);
+        }
+    }
+
+
+    analysisMoveListData(data, dataContent) {
+        for (let index in data) {
+            let dataList = {
+                id: data[index].id,
+                name: data[index].name,
+                pic: data[index].pic,
+                title: data[index].title,
+                year: data[index].year,
+                area: data[index].area,
+                actor: data[index].actor,
+            }
+            dataContent.push(dataList);
+        }
+
+        console.log(dataContent);
+    }
+
 
     componentDidMount() {
         this._fetchData();

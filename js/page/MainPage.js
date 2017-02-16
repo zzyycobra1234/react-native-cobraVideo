@@ -1,7 +1,7 @@
 /**
  * Created by Administrator on 2017/2/4 0004.
  */
-
+'use strict';
 import React, {Component} from 'react';
 import {
     Text, View, BackAndroid, ToastAndroid, StyleSheet,ScrollView
